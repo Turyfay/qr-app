@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:qr_app/providers/scan_list_provider.dart';
 
 class MapasScreen extends StatelessWidget {
   const MapasScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Mapas'),
-    );
+    final scanListProvider = Provider.of<ScanListProvider>(context);
+    return ListView.builder(
+      itemCount: scanListProvider.scanList.length,
+      itemBuilder: (_, index) {
+      return ListTile(
+        leading: const Icon(Icons.map,color: Colors.indigo,),
+        title: Text(scanListProvider.scanList[index].valor),
+        subtitle: Text("ID: " + scanListProvider.scanList[index].id.toString()),
+        trailing: const Icon(Icons.keyboard_arrow_right, color: Colors.grey,),
+        onTap: () {
+          Navigator.pushNamed(context, '/mapa/$index');
+        },
+      );
+    });
   }
 }
